@@ -55,9 +55,9 @@ var relativeSubrangeOutput = (windowSize, avgHomePricesLength, avgHomeSalePrices
   //traverse forward to console answer starting from n+1 until end.
   avgHomeSalePrices.reduce((result, salePrice, i, arr) => {
     //update trend
-    if(trendRight > 0) {
+    if(trendRight[i] > 0) {
       trend = trend < 0 ? trend - 1: -1;
-    } else if (trendRight < 0) {
+    } else if (trendRight[i] < 0) {
       trend = trend > 0 ? trend + 1: 1;
     } else {
       trend = 0;
