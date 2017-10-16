@@ -28,7 +28,7 @@ var relativeSubrangeOutput = (windowSize, avgHomePricesLength, avgHomeSalePrices
     if(i > 0) {
       if(arr[i-1] < salePrice) {
         if(result[0] < 0) {
-          result.unshift(result[0] - 1);
+          result.unshift((result[0] - 1) <= -windowSize ? -(windowSize - 1) : (result[0] - 1));
           return result;
         } else {
           result.unshift(-1);
@@ -36,7 +36,7 @@ var relativeSubrangeOutput = (windowSize, avgHomePricesLength, avgHomeSalePrices
         }
       } else if(arr[i-1] > salePrice) {
         if(result[0] > 0) {
-          result.unshift(result[0] + 1);
+          result.unshift((result[0] + 1) >= windowSize ? (windowSize - 1) : (result[0] + 1));
           return result;
         } else {
           result.unshift(1);
@@ -49,23 +49,24 @@ var relativeSubrangeOutput = (windowSize, avgHomePricesLength, avgHomeSalePrices
     } else {
       return result;
     }
-  }, [])
+  }, []);
+  console.log(trendRight)
   //1 variable to represent trend positive or negative.
   var trend = 0;
   //traverse forward to console answer starting from n+1 until end.
   avgHomeSalePrices.reduce((result, salePrice, i, arr) => {
     //update trend
     if(trendRight[i] > 0) {
-      trend = trend < 0 ? trend - 1: -1;
+      trend = trend < 0 ? ((trend - 1) <= -windowSize ? -(windowSize - 1) : (trend - 1) ): -1;
     } else if (trendRight[i] < 0) {
-      trend = trend > 0 ? trend + 1: 1;
+      trend = trend > 0 ? ((trend + 1) >= windowSize ? (windowSize - 1) : (trend + 1)): 1;
     } else {
       trend = 0;
     }
     //console result
-    if(i > windowSize - 1) {
+    if(i >= windowSize - 1) {
       console.log(result);
-      result + trendRight[i];
+      result += trendRight[i - (windowSize - 1)];
     }
     //update result
     return result + trend;
